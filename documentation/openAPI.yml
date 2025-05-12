@@ -2,7 +2,7 @@
 openapi: 3.0.2
 info:
   title: TestConsumerDrivenContract
-  version: 1.0.0
+  version: 1.0.1
   description: This template test the Consumer Driven Contract approach
 paths:
   /products:
@@ -13,33 +13,17 @@ paths:
     get:
       servers:
       - url: http://staging.nextory.com/exploration
-        description: ""
+        description: Dummy exploration API
       responses:
         "200":
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Product'
+                $ref: '#/components/schemas/ProductResponse'
           description: Successful response - returns an array of `Product` entities.
       operationId: getProducts
       summary: List All Products
       description: Gets a list of all `Product` entities.
-    post:
-      requestBody:
-        description: A new `Product` to be created.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Product'
-        required: true
-      responses:
-        "201":
-          description: Successful response.
-      operationId: createProduct
-      summary: Create a Product
-      description: Creates a new instance of a `Product`.
   /products/{productId}:
     summary: Path used to manage a single Product.
     description: "The REST endpoint/path used to get, update, and delete single instances\
@@ -88,6 +72,83 @@ paths:
         type: string
       in: path
       required: true
+  /productresponses:
+    summary: Path used to manage the list of productresponses.
+    description: "The REST endpoint/path used to list and create zero or more `ProductResponse`\
+      \ entities.  This path contains a `GET` and `POST` operation to perform the\
+      \ list and create tasks, respectively."
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductResponse'
+          description: Successful response - returns an array of `ProductResponse`
+            entities.
+      operationId: getProductResponses
+      summary: List All ProductResponses
+      description: Gets a list of all `ProductResponse` entities.
+    post:
+      requestBody:
+        description: A new `ProductResponse` to be created.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductResponse'
+        required: true
+      responses:
+        "201":
+          description: Successful response.
+      operationId: createProductResponse
+      summary: Create a ProductResponse
+      description: Creates a new instance of a `ProductResponse`.
+  /productresponses/{productresponseId}:
+    summary: Path used to manage a single ProductResponse.
+    description: "The REST endpoint/path used to get, update, and delete single instances\
+      \ of an `ProductResponse`.  This path contains `GET`, `PUT`, and `DELETE` operations\
+      \ used to perform the get, update, and delete tasks, respectively."
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+          description: Successful response - returns a single `ProductResponse`.
+      operationId: getProductResponse
+      summary: Get a ProductResponse
+      description: Gets the details of a single instance of a `ProductResponse`.
+    put:
+      requestBody:
+        description: Updated `ProductResponse` information.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductResponse'
+        required: true
+      responses:
+        "202":
+          description: Successful response.
+      operationId: updateProductResponse
+      summary: Update a ProductResponse
+      description: Updates an existing `ProductResponse`.
+    delete:
+      responses:
+        "204":
+          description: Successful response.
+      operationId: deleteProductResponse
+      summary: Delete a ProductResponse
+      description: Deletes an existing `ProductResponse`.
+    parameters:
+    - name: productresponseId
+      description: A unique identifier for a `ProductResponse`.
+      schema:
+        type: string
+      in: path
+      required: true
 components:
   schemas:
     Product:
@@ -112,3 +173,21 @@ components:
         id: 1
         title: First product
         author: me
+    ProductResponse:
+      description: ""
+      required:
+      - products
+      type: object
+      properties:
+        products:
+          description: ""
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+  responses:
+    ProductsResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductResponse'
+      description: ""
