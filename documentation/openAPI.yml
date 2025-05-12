@@ -1,0 +1,114 @@
+---
+openapi: 3.0.2
+info:
+  title: TestConsumerDrivenContract
+  version: 1.0.0
+  description: This template test the Consumer Driven Contract approach
+paths:
+  /products:
+    summary: Path used to manage the list of products.
+    description: "The REST endpoint/path used to list and create zero or more `Product`\
+      \ entities.  This path contains a `GET` and `POST` operation to perform the\
+      \ list and create tasks, respectively."
+    get:
+      servers:
+      - url: http://staging.nextory.com/exploration
+        description: ""
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+          description: Successful response - returns an array of `Product` entities.
+      operationId: getProducts
+      summary: List All Products
+      description: Gets a list of all `Product` entities.
+    post:
+      requestBody:
+        description: A new `Product` to be created.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      responses:
+        "201":
+          description: Successful response.
+      operationId: createProduct
+      summary: Create a Product
+      description: Creates a new instance of a `Product`.
+  /products/{productId}:
+    summary: Path used to manage a single Product.
+    description: "The REST endpoint/path used to get, update, and delete single instances\
+      \ of an `Product`.  This path contains `GET`, `PUT`, and `DELETE` operations\
+      \ used to perform the get, update, and delete tasks, respectively."
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: Successful response - returns a single `Product`.
+      operationId: getProduct
+      summary: Get a Product
+      description: Gets the details of a single instance of a `Product`.
+    put:
+      requestBody:
+        description: Updated `Product` information.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      responses:
+        "202":
+          description: Successful response.
+      operationId: updateProduct
+      summary: Update a Product
+      description: Updates an existing `Product`.
+    post:
+      responses:
+        "204":
+          description: No content
+    delete:
+      responses:
+        "204":
+          description: Successful response.
+      operationId: deleteProduct
+      summary: Delete a Product
+      description: Deletes an existing `Product`.
+    parameters:
+    - name: productId
+      description: A unique identifier for a `Product`.
+      schema:
+        type: string
+      in: path
+      required: true
+components:
+  schemas:
+    Product:
+      title: Root Type for Product
+      description: A product to be define
+      type: object
+      properties:
+        id:
+          format: int32
+          description: Product unique identifier
+          type: integer
+          example: "1"
+        title:
+          description: Book title
+          type: string
+          example: La casa de papel
+        author:
+          description: Book author
+          type: string
+          example: John Reid
+      example:
+        id: 1
+        title: First product
+        author: me
